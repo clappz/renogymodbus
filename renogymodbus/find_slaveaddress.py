@@ -14,6 +14,7 @@ def find_slaveaddress(portname):
     addresses = []
 
     for address in range(0x01, 0xf8):
+        print('Trying address: ' + str(address))
         instrument.address = address
         try:
             try:
