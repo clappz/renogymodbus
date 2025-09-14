@@ -175,3 +175,16 @@ class RenogyChargeController(RetriableInstrument):
     def get_total_battery_full_charges(self):
         """Total battery full charges"""
         return self.retriable_read_register(0x117, 0, 3, False)
+
+    def get_controller_fault_warning(self):
+        """Controller Fault and Warning words (MSB first)"""
+        output = bytearray()
+        for reg in range(0x121, 0x122 + 1):
+            word = self.retriable_read_register(reg, 0, 3, False)
+            output.append((word & 0xFF00) >> 8)
+            output.append(word & 0x00FF)
+        return output
+
+    def get_charging_state(self):
+        """Charging state"""
+        return self.retriable_read_register(0x120, 0, 3, False) & 0x00FF
